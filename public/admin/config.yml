@@ -1,7 +1,6 @@
 backend:
-  name: github
-  repo: RolandoGR/ilustropoli-website
-  branch: main
+  name: git-gateway
+  branch: master
 
 # Local backend for development — run `npx decap-server` to use
 # local_backend: true
