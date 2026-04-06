@@ -1,0 +1,49 @@
+---
+interface Props {
+  title: string;
+  date: string;
+  duration: string;
+  price: number;
+  capacity: number;
+  slug: string;
+}
+
+const { title, date, duration, price, capacity, slug } = Astro.props;
+
+const formattedPrice = new Intl.NumberFormat('es-AR', {
+  style: 'currency',
+  currency: 'ARS',
+  maximumFractionDigits: 0,
+}).format(price);
+
+const formattedDate = new Date(date + 'T12:00:00').toLocaleDateString('es-AR', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<article class="border border-stone-200 p-6 hover:border-stone-400 transition-colors">
+  <a href={`/workshop/${slug}`} class="block">
+    <p class="text-xs uppercase tracking-widest text-stone-400 mb-3">Taller</p>
+    <h3 class="font-serif text-xl font-medium text-stone-900 leading-snug">{title}</h3>
+
+    <dl class="mt-4 space-y-1.5 text-sm text-stone-500">
+      <div class="flex gap-2">
+        <dt class="sr-only">Fecha</dt>
+        <dd class="capitalize">{formattedDate}</dd>
+      </div>
+      <div class="flex gap-2">
+        <dt class="font-medium text-stone-700">Duración:</dt>
+        <dd>{duration}</dd>
+      </div>
+      <div class="flex gap-2">
+        <dt class="font-medium text-stone-700">Cupos:</dt>
+        <dd>{capacity} personas</dd>
+      </div>
+    </dl>
+
+    <p class="mt-4 text-lg font-serif font-semibold text-stone-900">{formattedPrice}</p>
+  </a>
+</article>

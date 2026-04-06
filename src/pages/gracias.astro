@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="¡Gracias por tu compra!"
+  description="Tu compra fue procesada exitosamente."
+>
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+    <!-- Icon -->
+    <div class="inline-flex items-center justify-center w-16 h-16 border border-stone-200 mb-8">
+      <svg class="w-7 h-7 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/>
+      </svg>
+    </div>
+
+    <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-stone-900">¡Gracias!</h1>
+    <p class="mt-4 text-stone-500 leading-relaxed">
+      Tu compra fue procesada correctamente.<br />
+      Te enviaré un email con los detalles y coordinaremos la entrega.
+    </p>
+
+    <div class="mt-10 flex flex-wrap justify-center gap-4">
+      <a
+        href="/gallery"
+        class="inline-block border border-stone-300 text-stone-700 px-5 py-2.5 text-sm hover:border-stone-500 transition-colors"
+      >
+        Ver más obras
+      </a>
+      <a
+        href="/"
+        class="inline-block text-stone-400 px-5 py-2.5 text-sm hover:text-stone-700 transition-colors"
+      >
+        Volver al inicio
+      </a>
+    </div>
+  </div>
+</BaseLayout>

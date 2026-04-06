@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BuyButton from '../../components/BuyButton.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const workshops = await getCollection('workshops');
+  return workshops.map(workshop => ({
+    params: { slug: workshop.slug },
+    props: { workshop },
+  }));
+}
+
+const { workshop } = Astro.props;
+const { Content } = await render(workshop);
+
+const { title, date, duration, price, capacity, payment_link } = workshop.data;
+
+const formattedPrice = new Intl.NumberFormat('es-AR', {
+  style: 'currency',
+  currency: 'ARS',
+  maximumFractionDigits: 0,
+}).format(price);
+
+const formattedDate = new Date(date + 'T12:00:00').toLocaleDateString('es-AR', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<BaseLayout
+  title={title}
+  description={`Taller: ${title}. ${formattedDate}. ${duration}. ${formattedPrice}.`}
+>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Back -->
+    <a href="/workshops" class="inline-flex items-center gap-1 text-sm text-stone-400 hover:text-stone-700 transition-colors mb-8">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      </svg>
+      Volver a talleres
+    </a>
+
+    <p class="text-xs uppercase tracking-widest text-stone-400 mb-3">Taller</p>
+    <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-stone-900 leading-tight">{title}</h1>
+
+    <!-- Meta -->
+    <dl class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4 border-t border-b border-stone-200 py-6">
+      <div>
+        <dt class="text-xs uppercase tracking-widest text-stone-400 mb-1">Fecha</dt>
+        <dd class="text-sm text-stone-800 capitalize">{formattedDate}</dd>
+      </div>
+      <div>
+        <dt class="text-xs uppercase tracking-widest text-stone-400 mb-1">Duración</dt>
+        <dd class="text-sm text-stone-800">{duration}</dd>
+      </div>
+      <div>
+        <dt class="text-xs uppercase tracking-widest text-stone-400 mb-1">Cupos</dt>
+        <dd class="text-sm text-stone-800">{capacity} personas</dd>
+      </div>
+      <div>
+        <dt class="text-xs uppercase tracking-widest text-stone-400 mb-1">Precio</dt>
+        <dd class="text-sm text-stone-800 font-medium">{formattedPrice}</dd>
+      </div>
+    </dl>
+
+    <!-- Content -->
+    <div class="mt-8 art-prose prose-stone text-stone-600 leading-relaxed space-y-4 max-w-2xl">
+      <Content />
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-10 flex flex-col sm:flex-row items-start gap-4">
+      {payment_link ? (
+        <BuyButton paymentLink={payment_link} label="Reservar mi lugar" price={price} />
+      ) : (
+        <p class="text-stone-400 italic text-sm">Reservas próximamente disponibles.</p>
+      )}
+    </div>
+
+    <p class="mt-4 text-xs text-stone-400">
+      Al hacer clic serás redirigido a MercadoPago para completar tu reserva de forma segura.
+    </p>
+  </div>
+</BaseLayout>

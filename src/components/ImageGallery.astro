@@ -1,0 +1,60 @@
+---
+interface Props {
+  images: string[];
+  title: string;
+}
+
+const { images, title } = Astro.props;
+---
+
+<div class="space-y-4">
+  <!-- Main image -->
+  <div class="aspect-[4/3] overflow-hidden bg-stone-100">
+    <img
+      id="main-image"
+      src={images[0]}
+      alt={title}
+      loading="eager"
+      decoding="async"
+      class="w-full h-full object-cover"
+      onerror="this.src='/images/placeholder.svg'"
+    />
+  </div>
+
+  <!-- Thumbnails (only if more than one image) -->
+  {images.length > 1 && (
+    <div class="flex gap-2 overflow-x-auto pb-1">
+      {images.map((img, i) => (
+        <button
+          class="thumbnail flex-shrink-0 w-16 h-16 overflow-hidden border-2 border-transparent hover:border-stone-400 transition-colors focus:outline-none focus:border-stone-600"
+          data-src={img}
+          aria-label={`Ver imagen ${i + 1}`}
+        >
+          <img
+            src={img}
+            alt={`${title} — vista ${i + 1}`}
+            loading="lazy"
+            class="w-full h-full object-cover"
+            onerror="this.src='/images/placeholder.svg'"
+          />
+        </button>
+      ))}
+    </div>
+  )}
+</div>
+
+<script>
+  const mainImage = document.getElementById('main-image') as HTMLImageElement;
+  const thumbnails = document.querySelectorAll<HTMLButtonElement>('.thumbnail');
+
+  thumbnails.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const src = btn.dataset.src;
+      if (src && mainImage) {
+        mainImage.src = src;
+      }
+      thumbnails.forEach(b => b.classList.remove('border-stone-600'));
+      btn.classList.add('border-stone-600');
+    });
+  });
+</script>

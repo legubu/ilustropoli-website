@@ -1,0 +1,55 @@
+backend:
+  name: github
+  repo: YOUR_GITHUB_USERNAME/ilustropoli-website
+  branch: main
+
+# Local backend for development — run `npx decap-server` to use
+# local_backend: true
+
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+site_url: https://ilustropoli.com
+display_url: https://ilustropoli.com
+
+collections:
+  - name: artworks
+    label: Obras
+    label_singular: Obra
+    folder: src/content/artworks
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Título, name: title, widget: string }
+      - { label: Precio (ARS), name: price, widget: number, value_type: int }
+      - label: Imágenes
+        name: images
+        widget: list
+        field: { label: Imagen, name: image, widget: image }
+        min: 1
+      - { label: Descripción, name: body, widget: markdown, required: false }
+      - { label: Paleta, name: palette, widget: string, required: false }
+      - { label: Soporte / Dimensiones, name: surface, widget: string, required: false }
+      - { label: Stock, name: stock, widget: number, value_type: int, default: 1 }
+      - { label: Destacada, name: featured, widget: boolean, default: false }
+      - { label: Link de pago (MercadoPago / PayPal), name: payment_link, widget: string, required: false }
+
+  - name: workshops
+    label: Talleres
+    label_singular: Taller
+    folder: src/content/workshops
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Título, name: title, widget: string }
+      - { label: Fecha, name: date, widget: date, format: YYYY-MM-DD }
+      - { label: Duración, name: duration, widget: string, hint: "Ej: 4 horas" }
+      - { label: Precio (ARS), name: price, widget: number, value_type: int }
+      - { label: Cupos, name: capacity, widget: number, value_type: int }
+      - { label: Destacado, name: featured, widget: boolean, default: false }
+      - { label: Link de pago, name: payment_link, widget: string, required: false }
+      - { label: Descripción, name: body, widget: markdown, required: false }

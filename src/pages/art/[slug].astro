@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ImageGallery from '../../components/ImageGallery.astro';
+import BuyButton from '../../components/BuyButton.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const artworks = await getCollection('artworks');
+  return artworks.map(artwork => ({
+    params: { slug: artwork.slug },
+    props: { artwork },
+  }));
+}
+
+const { artwork } = Astro.props;
+const { Content } = await render(artwork);
+
+const { title, price, images, palette, surface, stock, payment_link } = artwork.data;
+
+const formattedPrice = new Intl.NumberFormat('es-AR', {
+  style: 'currency',
+  currency: 'ARS',
+  maximumFractionDigits: 0,
+}).format(price);
+
+const inStock = stock > 0;
+---
+
+<BaseLayout
+  title={title}
+  description={`${title} — Obra original. ${surface ?? ''}`.trim()}
+  image={images[0]}
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Back -->
+    <a href="/gallery" class="inline-flex items-center gap-1 text-sm text-stone-400 hover:text-stone-700 transition-colors mb-8">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      </svg>
+      Volver a la galería
+    </a>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+      <!-- Images -->
+      <div>
+        <ImageGallery images={images} title={title} />
+      </div>
+
+      <!-- Details -->
+      <div class="lg:pt-4">
+        <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-stone-900 leading-tight">{title}</h1>
+
+        <p class="mt-4 text-2xl font-serif text-stone-700">{formattedPrice}</p>
+
+        <!-- Specs -->
+        <dl class="mt-6 space-y-2 text-sm border-t border-stone-200 pt-6">
+          {surface && (
+            <div class="flex gap-3">
+              <dt class="text-stone-400 w-24 flex-shrink-0">Soporte</dt>
+              <dd class="text-stone-700">{surface}</dd>
+            </div>
+          )}
+          {palette && (
+            <div class="flex gap-3">
+              <dt class="text-stone-400 w-24 flex-shrink-0">Paleta</dt>
+              <dd class="text-stone-700">{palette}</dd>
+            </div>
+          )}
+          <div class="flex gap-3">
+            <dt class="text-stone-400 w-24 flex-shrink-0">Disponible</dt>
+            <dd class={inStock ? 'text-green-700' : 'text-stone-400'}>
+              {inStock ? `${stock} ${stock === 1 ? 'pieza' : 'piezas'}` : 'Agotada'}
+            </dd>
+          </div>
+        </dl>
+
+        <!-- Description -->
+        <div class="mt-8 art-prose prose-stone text-stone-600 leading-relaxed space-y-4">
+          <Content />
+        </div>
+
+        <!-- CTA -->
+        <div class="mt-8">
+          {payment_link && inStock ? (
+            <BuyButton paymentLink={payment_link} price={price} />
+          ) : (
+            <p class="text-sm text-stone-400 italic">Esta obra ya no está disponible.</p>
+          )}
+        </div>
+
+        <p class="mt-4 text-xs text-stone-400">
+          Al hacer clic serás redirigido a MercadoPago para completar la compra de forma segura.
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

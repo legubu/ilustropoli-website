@@ -1,0 +1,31 @@
+---
+import ArtworkCard from './ArtworkCard.astro';
+
+interface Artwork {
+  slug: string;
+  data: {
+    title: string;
+    price: number;
+    images: string[];
+    surface?: string;
+  };
+}
+
+interface Props {
+  artworks: Artwork[];
+}
+
+const { artworks } = Astro.props;
+---
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
+  {artworks.map(artwork => (
+    <ArtworkCard
+      title={artwork.data.title}
+      price={artwork.data.price}
+      image={artwork.data.images[0]}
+      slug={artwork.slug}
+      surface={artwork.data.surface}
+    />
+  ))}
+</div>
