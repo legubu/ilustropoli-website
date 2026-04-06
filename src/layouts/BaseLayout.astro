@@ -43,6 +43,9 @@ const siteTitle = title === 'Ilustropoli' ? title : `${title} — Ilustropoli`;
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{siteTitle}</title>
+
+    <!-- Netlify Identity Widget — handles invite/recovery email tokens -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body class="min-h-screen flex flex-col">
     <Header />
@@ -50,5 +53,17 @@ const siteTitle = title === 'Ilustropoli' ? title : `${title} — Ilustropoli`;
       <slot />
     </main>
     <Footer />
+    <script>
+      // Redirect to admin after Netlify Identity login
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on('init', (user: any) => {
+          if (!user) {
+            window.netlifyIdentity.on('login', () => {
+              document.location.href = '/admin/';
+            });
+          }
+        });
+      }
+    </script>
   </body>
 </html>
