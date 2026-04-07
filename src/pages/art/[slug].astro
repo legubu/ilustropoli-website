@@ -17,9 +17,9 @@ const { Content } = await render(artwork);
 
 const { title, price, images, palette, surface, stock, payment_link } = artwork.data;
 
-const formattedPrice = new Intl.NumberFormat('es-AR', {
+const formattedPrice = new Intl.NumberFormat('es-MX', {
   style: 'currency',
-  currency: 'ARS',
+  currency: 'MXN',
   maximumFractionDigits: 0,
 }).format(price);
 
