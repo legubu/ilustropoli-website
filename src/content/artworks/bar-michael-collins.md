@@ -1,14 +1,14 @@
 ---
-title: "Bar Michael Collins"
-price: 18000
+title: Bar Michael Collins
+price: 450
 images:
-  - "/images/artworks/bar-michael-collins.jpg"
-palette: "Tierras, azules y dorados"
-surface: "Tela de lino, 50x70 cm"
+  - /images/artworks/bar-michael-collins.jpg
+palette: Tierras, azules y dorados
+surface: Tela de lino, 50x70 cm
 stock: 1
 featured: true
-payment_link: "https://mpago.la/example-link-1"
-description: "Obra de descripción de ejemplo"
+payment_link: https://mpago.la/example-link-1
+description: Obra de descripción de ejemplo
 ---
 
 Una fachada que resguarda historias, capturada en un instante de luz dorada. La arquitectura se vuelve íntima a través de una paleta de tierras cálidas y azules suaves que evocan la quietud de un momento suspendido, invitando a la contemplación de lo cotidiano.
