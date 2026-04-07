@@ -1,14 +1,14 @@
 ---
-title: "Palo Verde"
-price: 22000
+title: Palo Verde
+price: 650
 images:
-  - "/images/artworks/palo-verde.jpg"
-palette: "Verdes, rosas y ocres"
-surface: "Papel de algodón 300g, 35x50 cm"
+  - /images/artworks/palo-verde.jpg
+palette: Verdes, rosas y ocres
+surface: Papel de algodón 300g, 35x50 cm
 stock: 1
 featured: true
-payment_link: "https://mpago.la/example-link-2"
-description: "Obra de descripción de ejemplo"
+payment_link: https://mpago.la/example-link-2
+description: Obra de descripción de ejemplo
 ---
 
 La explosión del desierto que reclama su lugar en la acera. Esta obra celebra el instante en que el Palo Verde se transforma en una mancha de luz vibrante, contrastando la estructura rígida de la ciudad con la libertad orgánica de la flora sonorense.
