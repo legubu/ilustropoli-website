@@ -6,13 +6,15 @@ backend:
 # Local backend for development — run `npx decap-server` to use
 # local_backend: true
 
-media_folder: public/images/uploads
-public_folder: /images/uploads
+media_folder: public/images/artworks
+public_folder: /images/artworks
 
-site_url: https://ilustropoli.com
-display_url: https://ilustropoli.com
+site_url: https://ilustropoli.netlify.app
+display_url: https://ilustropoli.netlify.app
 
 collections:
+
+  # ── OBRAS ────────────────────────────────────────────────────────
   - name: artworks
     label: Obras
     label_singular: Obra
@@ -21,22 +23,35 @@ collections:
     slug: "{{slug}}"
     extension: md
     format: frontmatter
+    summary: "{{title}}"
     fields:
       - { label: Título, name: title, widget: string }
-      - { label: Precio (MXN), name: price, widget: number, value_type: int }
+
       - label: Imágenes
         name: images
         widget: list
-        field: { label: Imagen, name: image, widget: image }
         min: 1
-      - { label: Descripción, name: body, widget: markdown, required: false }
-      - { label: Paleta, name: palette, widget: string, required: false }
-      - { label: Soporte / Dimensiones, name: surface, widget: string, required: false }
-      - { label: Stock, name: stock, widget: number, value_type: int, default: 1 }
-      - { label: Destacada en inicio, name: featured, widget: boolean, default: false }
-      - { label: Disponible para venta, name: for_sale, widget: boolean, default: false }
-      - { label: Link de pago (MercadoPago / PayPal), name: payment_link, widget: string, required: false }
+        hint: "La primera imagen es la principal. Podés agregar más para la galería de detalle."
+        field: { label: Imagen, name: image, widget: image }
 
+      - { label: Soporte / Dimensiones, name: surface, widget: string, required: false, hint: "Ej: Acuarela sobre papel 300g, 35×50 cm" }
+      - { label: Paleta, name: palette, widget: string, required: false, hint: "Ej: Tierras, azules y dorados" }
+
+      - { label: Destacada en inicio, name: featured, widget: boolean, default: false, hint: "Aparece en la sección de obras destacadas en la página principal." }
+
+      - label: "——— Venta ———"
+        name: sale_divider
+        widget: hidden
+        default: ""
+
+      - { label: Disponible para venta, name: for_sale, widget: boolean, default: false, hint: "Activar para que aparezca en la Tienda con precio y botón de compra." }
+      - { label: Precio (MXN), name: price, widget: number, value_type: int, required: false, hint: "Solo necesario si la obra está en venta." }
+      - { label: Stock, name: stock, widget: number, value_type: int, default: 1, required: false, hint: "Cantidad de piezas disponibles. Dejar en 1 para obra única." }
+      - { label: Link de pago (MercadoPago), name: payment_link, widget: string, required: false, hint: "URL de MercadoPago. Ej: https://mpago.la/XXXXXX" }
+
+      - { label: Descripción, name: body, widget: markdown, required: false, hint: "Historia, técnica, inspiración de la obra." }
+
+  # ── TALLERES ─────────────────────────────────────────────────────
   - name: workshops
     label: Talleres
     label_singular: Taller
@@ -45,12 +60,13 @@ collections:
     slug: "{{slug}}"
     extension: md
     format: frontmatter
+    summary: "{{title}} — {{date}}"
     fields:
       - { label: Título, name: title, widget: string }
-      - { label: Fecha, name: date, widget: date, format: YYYY-MM-DD }
+      - { label: Fecha, name: date, widget: string, hint: "Formato: YYYY-MM-DD. Ej: 2026-05-10" }
       - { label: Duración, name: duration, widget: string, hint: "Ej: 4 horas" }
       - { label: Precio (MXN), name: price, widget: number, value_type: int }
-      - { label: Cupos, name: capacity, widget: number, value_type: int }
-      - { label: Destacado, name: featured, widget: boolean, default: false }
-      - { label: Link de pago, name: payment_link, widget: string, required: false }
-      - { label: Descripción, name: body, widget: markdown, required: false }
+      - { label: Cupos disponibles, name: capacity, widget: number, value_type: int }
+      - { label: Destacado en inicio, name: featured, widget: boolean, default: false }
+      - { label: Link de pago (MercadoPago), name: payment_link, widget: string, required: false, hint: "URL de MercadoPago para reservar lugar." }
+      - { label: Descripción, name: body, widget: markdown, required: false, hint: "Qué incluye, nivel, lugar, etc." }
