@@ -2,7 +2,7 @@
 title: Retrato Expresivo — Óleo y Carbón
 date: 2026-05-24
 duration: 6 horas
-price: 650
+price: 600
 capacity: 6
 featured: false
 payment_link: https://mpago.la/example-workshop-2
