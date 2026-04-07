@@ -16,40 +16,40 @@ const sorted = artworks.sort((a, b) => {
 >
 
   <!-- ── CAROUSEL ───────────────────────────────────────────────── -->
-  <section class="pt-12 pb-4">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+  <section class="pt-12 pb-4" id="carousel-section">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
       <p class="text-xs uppercase tracking-widest text-stone-400 mb-2">Portfolio</p>
       <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-stone-900">Galería</h1>
     </div>
 
     {sorted.length > 0 && (
-      <div class="relative">
+      <div class="relative" id="carousel-root">
 
-        <!-- Viewport — clips but lets side peeks show -->
-        <div class="overflow-hidden px-4 sm:px-8 lg:px-16">
-          <div
-            id="carousel-track"
-            class="flex gap-4 sm:gap-6"
-            style="transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);"
-          >
+        <!-- Track -->
+        <div class="overflow-hidden px-4 sm:px-10 lg:px-20">
+          <div id="carousel-track" class="flex gap-4 sm:gap-6">
             {sorted.map((artwork, i) => (
               <div
-                class="carousel-slide flex-shrink-0 w-[85vw] sm:w-[70vw] lg:w-[55vw] group"
+                class="carousel-slide flex-shrink-0 w-[80vw] sm:w-[62vw] lg:w-[48vw]"
                 data-index={i}
               >
-                <!-- Image -->
-                <a href={`/art/${artwork.slug}`} class="block overflow-hidden bg-stone-100">
-                  <img
-                    src={artwork.data.images[0]}
-                    alt={artwork.data.title}
-                    loading={i === 0 ? 'eager' : 'lazy'}
-                    class="w-full max-h-[65vh] object-contain transition-transform duration-500 group-hover:scale-[1.02]"
-                    onerror="this.src='/images/placeholder.svg'"
-                  />
-                </a>
+                <!-- Image wrapper — scale + opacity applied via JS -->
+                <div class="slide-inner overflow-hidden bg-stone-100"
+                  style="transition: opacity 0.5s ease, transform 0.5s ease; transform-origin: center;">
+                  <a href={`/art/${artwork.slug}`} class="block">
+                    <img
+                      src={artwork.data.images[0]}
+                      alt={artwork.data.title}
+                      loading={i === 0 ? 'eager' : 'lazy'}
+                      class="w-full max-h-[62vh] object-contain"
+                      onerror="this.src='/images/placeholder.svg'"
+                    />
+                  </a>
+                </div>
 
-                <!-- Caption -->
-                <div class="mt-4 flex items-start justify-between gap-4">
+                <!-- Caption — also fades with slide -->
+                <div class="slide-caption mt-4 flex items-start justify-between gap-4"
+                  style="transition: opacity 0.5s ease;">
                   <div>
                     <h2 class="font-serif text-lg font-medium text-stone-900 leading-snug">
                       {artwork.data.title}
@@ -58,19 +58,15 @@ const sorted = artworks.sort((a, b) => {
                       <p class="text-xs text-stone-400 mt-0.5">{artwork.data.surface}</p>
                     )}
                   </div>
-                  <div class="flex-shrink-0 flex gap-2 items-center">
+                  <div class="flex-shrink-0 flex gap-3 items-center pt-1">
                     {artwork.data.for_sale && (
-                      <a
-                        href="/shop"
-                        class="text-xs border border-stone-300 text-stone-600 px-3 py-1 hover:border-stone-600 transition-colors whitespace-nowrap"
-                      >
+                      <a href="/shop"
+                        class="text-xs border border-stone-300 text-stone-500 px-3 py-1 hover:border-stone-600 hover:text-stone-800 transition-colors whitespace-nowrap">
                         En tienda
                       </a>
                     )}
-                    <a
-                      href={`/art/${artwork.slug}`}
-                      class="text-xs text-stone-400 hover:text-stone-700 transition-colors whitespace-nowrap"
-                    >
+                    <a href={`/art/${artwork.slug}`}
+                      class="text-xs text-stone-400 hover:text-stone-700 transition-colors whitespace-nowrap">
                       Ver →
                     </a>
                   </div>
@@ -80,40 +76,42 @@ const sorted = artworks.sort((a, b) => {
           </div>
         </div>
 
-        <!-- Controls row -->
-        <div class="max-w-6xl mx-auto px-4 sm:px-8 lg:px-16 mt-6 flex items-center justify-between">
-          <!-- Counter -->
-          <p id="counter" class="text-xs text-stone-400 tabular-nums">
-            1 / {sorted.length}
-          </p>
+        <!-- Controls -->
+        <div class="max-w-6xl mx-auto px-4 sm:px-10 lg:px-20 mt-8 flex items-center justify-between">
+          <p id="counter" class="text-xs text-stone-400 tabular-nums">1 / {sorted.length}</p>
 
-          <!-- Dots + arrows -->
           <div class="flex items-center gap-4">
             <button id="prev-btn" aria-label="Anterior"
-              class="w-8 h-8 border border-stone-300 flex items-center justify-center text-stone-400 hover:border-stone-700 hover:text-stone-900 transition-colors disabled:opacity-25 disabled:cursor-not-allowed">
+              class="w-8 h-8 border border-stone-300 flex items-center justify-center text-stone-400 hover:border-stone-700 hover:text-stone-900 transition-colors disabled:opacity-20 disabled:cursor-not-allowed">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/>
               </svg>
             </button>
 
-            <div id="dots" class="flex gap-1.5">
+            <div id="dots" class="flex items-center gap-1.5">
               {sorted.map((_, i) => (
-                <button
-                  class="dot w-1 h-1 rounded-full transition-all duration-300"
-                  data-index={i}
-                  aria-label={`Obra ${i + 1}`}
-                />
+                <button class="dot rounded-full transition-all duration-300"
+                  data-index={i} aria-label={`Obra ${i + 1}`} />
               ))}
             </div>
 
             <button id="next-btn" aria-label="Siguiente"
-              class="w-8 h-8 border border-stone-300 flex items-center justify-center text-stone-400 hover:border-stone-700 hover:text-stone-900 transition-colors disabled:opacity-25 disabled:cursor-not-allowed">
+              class="w-8 h-8 border border-stone-300 flex items-center justify-center text-stone-400 hover:border-stone-700 hover:text-stone-900 transition-colors disabled:opacity-20 disabled:cursor-not-allowed">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/>
               </svg>
             </button>
           </div>
         </div>
+
+        <!-- Autoplay progress bar -->
+        <div class="max-w-6xl mx-auto px-4 sm:px-10 lg:px-20 mt-4">
+          <div class="h-px bg-stone-100 w-full overflow-hidden">
+            <div id="progress-bar" class="h-full bg-stone-400"
+              style="width: 0%; transition: width linear;"></div>
+          </div>
+        </div>
+
       </div>
     )}
   </section>
@@ -142,11 +140,10 @@ const sorted = artworks.sort((a, b) => {
               <h3 class="text-sm font-medium text-stone-900 group-hover:text-stone-500 transition-colors truncate">
                 {artwork.data.title}
               </h3>
-              {artwork.data.for_sale ? (
-                <p class="text-xs text-stone-400 mt-0.5">Disponible</p>
-              ) : (
-                <p class="text-xs text-stone-300 mt-0.5">Portfolio</p>
-              )}
+              {artwork.data.for_sale
+                ? <p class="text-xs text-stone-400 mt-0.5">Disponible</p>
+                : <p class="text-xs text-stone-300 mt-0.5">Portfolio</p>
+              }
             </div>
           </a>
         </article>
@@ -157,56 +154,125 @@ const sorted = artworks.sort((a, b) => {
 </BaseLayout>
 
 <script>
-  const track   = document.getElementById('carousel-track') as HTMLElement;
-  const prevBtn = document.getElementById('prev-btn') as HTMLButtonElement;
-  const nextBtn = document.getElementById('next-btn') as HTMLButtonElement;
-  const counter = document.getElementById('counter') as HTMLElement;
-  const dots    = document.querySelectorAll<HTMLButtonElement>('.dot');
-  const slides  = document.querySelectorAll<HTMLElement>('.carousel-slide');
-  const total   = slides.length;
-  let current   = 0;
+  const track    = document.getElementById('carousel-track') as HTMLElement;
+  const prevBtn  = document.getElementById('prev-btn') as HTMLButtonElement;
+  const nextBtn  = document.getElementById('next-btn') as HTMLButtonElement;
+  const counter  = document.getElementById('counter') as HTMLElement;
+  const progress = document.getElementById('progress-bar') as HTMLElement;
+  const dots     = document.querySelectorAll<HTMLButtonElement>('.dot');
+  const slides   = document.querySelectorAll<HTMLElement>('.carousel-slide');
+  const total    = slides.length;
+  const DELAY    = 4000; // ms between auto-advances
 
-  function getSlideWidth(): number {
-    return slides[0]?.getBoundingClientRect().width + parseFloat(getComputedStyle(track).gap) || 0;
+  let current   = 0;
+  let autoTimer: ReturnType<typeof setTimeout> | null = null;
+  let isPaused  = false;
+
+  // ── Slide width helper
+  function slideWidth(): number {
+    const gap = parseFloat(getComputedStyle(track).gap) || 0;
+    return (slides[0]?.getBoundingClientRect().width ?? 0) + gap;
   }
 
-  function goTo(index: number) {
-    current = Math.max(0, Math.min(index, total - 1));
-    track.style.transform = `translateX(-${current * getSlideWidth()}px)`;
+  // ── Visual state per slide
+  function updateSlideStyles() {
+    slides.forEach((slide, i) => {
+      const inner   = slide.querySelector<HTMLElement>('.slide-inner');
+      const caption = slide.querySelector<HTMLElement>('.slide-caption');
+      const dist    = Math.abs(i - current);
 
-    counter.textContent = `${current + 1} / ${total}`;
+      if (dist === 0) {
+        // Active: full size, full opacity
+        inner!.style.opacity  = '1';
+        inner!.style.transform = 'scale(1)';
+        caption!.style.opacity = '1';
+      } else {
+        // Inactive: shrunk + dimmed
+        const opacity = dist === 1 ? '0.35' : '0.15';
+        const scale   = dist === 1 ? '0.92' : '0.85';
+        inner!.style.opacity   = opacity;
+        inner!.style.transform = `scale(${scale})`;
+        caption!.style.opacity = '0';
+      }
+    });
+  }
+
+  // ── Go to slide
+  function goTo(index: number, resetAuto = true) {
+    current = ((index % total) + total) % total; // wraps around
+    track.style.transform    = `translateX(-${current * slideWidth()}px)`;
+    track.style.transition   = 'transform 0.55s cubic-bezier(0.4,0,0.2,1)';
+    counter.textContent      = `${current + 1} / ${total}`;
+
+    updateSlideStyles();
 
     dots.forEach((dot, i) => {
       const active = i === current;
       dot.className = `dot rounded-full transition-all duration-300 ${
-        active ? 'w-4 h-1 bg-stone-800' : 'w-1 h-1 bg-stone-300'
+        active ? 'w-4 h-1 bg-stone-700' : 'w-1 h-1 bg-stone-300'
       }`;
     });
 
-    prevBtn.disabled = current === 0;
-    nextBtn.disabled = current === total - 1;
+    prevBtn.disabled = false;
+    nextBtn.disabled = false;
+
+    if (resetAuto) scheduleAuto();
   }
 
+  // ── Autoplay
+  function scheduleAuto() {
+    if (autoTimer) clearTimeout(autoTimer);
+    if (isPaused) return;
+
+    // Reset + animate progress bar
+    progress.style.transition = 'none';
+    progress.style.width      = '0%';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        progress.style.transition = `width ${DELAY}ms linear`;
+        progress.style.width      = '100%';
+      });
+    });
+
+    autoTimer = setTimeout(() => {
+      goTo(current + 1);
+    }, DELAY);
+  }
+
+  // ── Pause on hover
+  const section = document.getElementById('carousel-root')!;
+  section.addEventListener('mouseenter', () => {
+    isPaused = true;
+    if (autoTimer) clearTimeout(autoTimer);
+    progress.style.transition = 'none';
+  });
+  section.addEventListener('mouseleave', () => {
+    isPaused = false;
+    scheduleAuto();
+  });
+
+  // ── Controls
   prevBtn.addEventListener('click', () => goTo(current - 1));
   nextBtn.addEventListener('click', () => goTo(current + 1));
   dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
 
-  // Keyboard
+  // ── Keyboard
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') goTo(current - 1);
+    if (e.key === 'ArrowLeft')  goTo(current - 1);
     if (e.key === 'ArrowRight') goTo(current + 1);
   });
 
-  // Touch swipe
+  // ── Touch swipe
   let startX = 0;
   track.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
-  track.addEventListener('touchend', (e) => {
+  track.addEventListener('touchend',   (e) => {
     const diff = startX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) diff > 0 ? goTo(current + 1) : goTo(current - 1);
+    if (Math.abs(diff) > 50) goTo(diff > 0 ? current + 1 : current - 1);
   });
 
-  // Recalculate on resize
-  window.addEventListener('resize', () => goTo(current));
+  // ── Resize
+  window.addEventListener('resize', () => goTo(current, false));
 
+  // ── Init
   goTo(0);
 </script>
