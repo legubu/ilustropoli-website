@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CategoryFilter from '../components/CategoryFilter.astro';
 import { getCollection } from 'astro:content';
 
 const artworks = await getCollection('artworks');
@@ -8,6 +9,12 @@ const sorted = artworks.sort((a, b) => {
   if (!a.data.featured && b.data.featured) return 1;
   return a.data.title.localeCompare(b.data.title);
 });
+
+const categories = ['acuarela', 'acrilico', 'sketch'] as const;
+const counts = Object.fromEntries(
+  categories.map(cat => [cat, sorted.filter(a => a.data.category === cat).length])
+);
+const usedCategories = categories.filter(c => counts[c] > 0);
 ---
 
 <BaseLayout
@@ -118,14 +125,18 @@ const sorted = artworks.sort((a, b) => {
 
   <!-- ── FULL GRID ──────────────────────────────────────────────── -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 pb-20">
-    <div class="flex items-baseline justify-between mb-8 border-t border-stone-200 pt-8">
+    <div class="flex items-baseline justify-between border-t border-stone-200 pt-8 mb-6">
       <h2 class="font-serif text-xl font-medium text-stone-900">Toda la obra</h2>
       <p class="text-xs text-stone-400">{sorted.length} {sorted.length === 1 ? 'pieza' : 'piezas'}</p>
     </div>
 
+    {usedCategories.length > 0 && (
+      <CategoryFilter categories={usedCategories} counts={counts} total={sorted.length} />
+    )}
+
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8">
       {sorted.map(artwork => (
-        <article class="group">
+        <article class="group" data-category-item={artwork.data.category ?? ''}>
           <a href={`/art/${artwork.slug}`} class="block">
             <div class="aspect-square overflow-hidden bg-stone-100">
               <img
@@ -140,10 +151,10 @@ const sorted = artworks.sort((a, b) => {
               <h3 class="text-sm font-medium text-stone-900 group-hover:text-stone-500 transition-colors truncate">
                 {artwork.data.title}
               </h3>
-              {artwork.data.for_sale
-                ? <p class="text-xs text-stone-400 mt-0.5">Disponible</p>
-                : <p class="text-xs text-stone-300 mt-0.5">Portfolio</p>
-              }
+              <p class="text-xs text-stone-300 mt-0.5 capitalize">
+                {artwork.data.category ?? ''}
+                {artwork.data.for_sale && <span class="text-stone-400"> · Disponible</span>}
+              </p>
             </div>
           </a>
         </article>

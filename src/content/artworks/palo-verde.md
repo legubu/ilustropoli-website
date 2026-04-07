@@ -10,6 +10,7 @@ stock: 1
 payment_link: https://mpago.la/example-link-2
 description: Obra de descripción de ejemplo
 for_sale: true
+category: acuarela
 ---
 
 La explosión del desierto que reclama su lugar en la acera. Esta obra celebra el instante en que el Palo Verde se transforma en una mancha de luz vibrante, contrastando la estructura rígida de la ciudad con la libertad orgánica de la flora sonorense.

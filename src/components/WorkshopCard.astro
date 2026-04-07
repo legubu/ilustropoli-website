@@ -24,26 +24,26 @@ const formattedDate = new Date(date + 'T12:00:00').toLocaleDateString('es-MX', {
 });
 ---
 
-<article class="border border-stone-200 p-6 hover:border-stone-400 transition-colors">
+<article class="border border-stone-200 dark:border-stone-700 p-6 hover:border-stone-400 dark:hover:border-stone-500 transition-colors dark:bg-stone-900">
   <a href={`/workshop/${slug}`} class="block">
     <p class="text-xs uppercase tracking-widest text-stone-400 mb-3">Taller</p>
-    <h3 class="font-serif text-xl font-medium text-stone-900 leading-snug">{title}</h3>
+    <h3 class="font-serif text-xl font-medium text-stone-900 dark:text-stone-100 leading-snug">{title}</h3>
 
-    <dl class="mt-4 space-y-1.5 text-sm text-stone-500">
+    <dl class="mt-4 space-y-1.5 text-sm text-stone-500 dark:text-stone-400">
       <div class="flex gap-2">
         <dt class="sr-only">Fecha</dt>
         <dd class="capitalize">{formattedDate}</dd>
       </div>
       <div class="flex gap-2">
-        <dt class="font-medium text-stone-700">Duración:</dt>
+        <dt class="font-medium text-stone-700 dark:text-stone-300">Duración:</dt>
         <dd>{duration}</dd>
       </div>
       <div class="flex gap-2">
-        <dt class="font-medium text-stone-700">Cupos:</dt>
+        <dt class="font-medium text-stone-700 dark:text-stone-300">Cupos:</dt>
         <dd>{capacity} personas</dd>
       </div>
     </dl>
 
-    <p class="mt-4 text-lg font-serif font-semibold text-stone-900">{formattedPrice}</p>
+    <p class="mt-4 text-lg font-serif font-semibold text-stone-900 dark:text-stone-100">{formattedPrice}</p>
   </a>
 </article>

@@ -8,6 +8,7 @@ surface: Tela de lino, 50x70 cm
 stock: 1
 featured: true
 for_sale: false
+category: acuarela
 payment_link: https://mpago.la/example-link-1
 description: Obra de descripción de ejemplo
 ---

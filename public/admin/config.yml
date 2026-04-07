@@ -44,6 +44,16 @@ collections:
         widget: hidden
         default: ""
 
+      - label: Categoría
+        name: category
+        widget: select
+        options:
+          - { label: Acuarela, value: acuarela }
+          - { label: Acrílico, value: acrilico }
+          - { label: Sketch, value: sketch }
+        required: false
+        hint: "Técnica principal de la obra."
+
       - { label: Disponible para venta, name: for_sale, widget: boolean, default: false, hint: "Activar para que aparezca en la Tienda con precio y botón de compra." }
       - { label: Precio (MXN), name: price, widget: number, value_type: int, required: false, hint: "Solo necesario si la obra está en venta." }
       - { label: Stock, name: stock, widget: number, value_type: int, default: 1, required: false, hint: "Cantidad de piezas disponibles. Dejar en 1 para obra única." }

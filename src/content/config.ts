@@ -11,6 +11,7 @@ const artworks = defineCollection({
     stock: z.number().default(1),
     featured: z.boolean().default(false),
     for_sale: z.boolean().default(false),
+    category: z.enum(['acuarela', 'acrilico', 'sketch']).optional(),
     payment_link: z.string().url().optional(),
     description: z.string().optional(),
   }),
