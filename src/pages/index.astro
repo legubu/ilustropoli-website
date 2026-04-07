@@ -20,6 +20,11 @@ const upcomingWorkshops = allWorkshops
   title="Ilustropoli"
   description="Arte original, ilustración y talleres creativos. Hermosillo, Sonora."
 >
+<div class="relative">
+  <!-- Subtle background images, swapped by theme -->
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[url('/images/background-light.png')] bg-cover bg-top opacity-[0.07] dark:opacity-0"></div>
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[url('/images/background-dark.png')] bg-cover bg-top opacity-0 dark:opacity-[0.07]"></div>
+
   <!-- Hero -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20">
     <div class="max-w-2xl">
@@ -68,4 +73,5 @@ const upcomingWorkshops = allWorkshops
       </div>
     </section>
   )}
+</div>
 </BaseLayout>
