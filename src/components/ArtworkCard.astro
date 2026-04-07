@@ -1,7 +1,7 @@
 ---
 interface Props {
   title: string;
-  price: number;
+  price?: number;
   image: string;
   slug: string;
   surface?: string;
@@ -10,11 +10,13 @@ interface Props {
 
 const { title, price, image, slug, surface, tags = [] } = Astro.props;
 
-const formattedPrice = new Intl.NumberFormat('es-MX', {
-  style: 'currency',
-  currency: 'MXN',
-  maximumFractionDigits: 0,
-}).format(price);
+const formattedPrice = price != null
+  ? new Intl.NumberFormat('es-MX', {
+      style: 'currency',
+      currency: 'MXN',
+      maximumFractionDigits: 0,
+    }).format(price)
+  : null;
 ---
 
 <article class="group">
@@ -39,7 +41,9 @@ const formattedPrice = new Intl.NumberFormat('es-MX', {
       {surface && (
         <p class="text-xs text-stone-400 mt-0.5">{surface}</p>
       )}
-      <p class="text-sm font-medium text-stone-700 dark:text-stone-300 mt-1">{formattedPrice}</p>
+      {formattedPrice && (
+        <p class="text-sm font-medium text-stone-700 dark:text-stone-300 mt-1">{formattedPrice}</p>
+      )}
       {tags.length > 0 && (
         <div class="flex flex-wrap gap-1 mt-2">
           {tags.map(tag => (
