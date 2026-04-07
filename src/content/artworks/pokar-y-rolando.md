@@ -8,5 +8,5 @@ category: acuarela
 for_sale: false
 stock: 1
 tags:
-  - vendido
+  - trabajo-comisionado
 ---
