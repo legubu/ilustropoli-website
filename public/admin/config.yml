@@ -59,6 +59,15 @@ collections:
       - { label: Stock, name: stock, widget: number, value_type: int, default: 1, required: false, hint: "Cantidad de piezas disponibles. Dejar en 1 para obra única." }
       - { label: Link de pago (MercadoPago), name: payment_link, widget: string, required: false, hint: "URL de MercadoPago. Ej: https://mpago.la/XXXXXX" }
 
+      - label: Etiquetas
+        name: tags
+        widget: select
+        multiple: true
+        options:
+          - { label: Trabajo comisionado, value: trabajo comisionado }
+        required: false
+        hint: "Etiquetas adicionales para la obra."
+
       - { label: Descripción, name: body, widget: markdown, required: false, hint: "Historia, técnica, inspiración de la obra." }
 
   # ── TALLERES ─────────────────────────────────────────────────────

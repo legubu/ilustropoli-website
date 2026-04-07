@@ -14,6 +14,7 @@ const artworks = defineCollection({
     category: z.enum(['acuarela', 'acrilico', 'sketch']).optional(),
     payment_link: z.string().url().optional(),
     description: z.string().optional(),
+    tags: z.array(z.enum(['trabajo comisionado'])).optional(),
   }),
 });
 
