@@ -6,6 +6,6 @@ featured: false
 sale_divider: ""
 category: acuarela
 for_sale: true
-price: 500
+price: 400
 stock: 1
 ---
