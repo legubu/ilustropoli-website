@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 const { workshop } = Astro.props;
 const { Content } = await render(workshop);
 
-const { title, date, duration, price, capacity } = workshop.data;
+const { title, date, duration, price, capacity, image } = workshop.data;
 
 const formattedPrice = new Intl.NumberFormat('es-MX', {
   style: 'currency',
@@ -41,6 +41,19 @@ const formattedDate = new Date(date + 'T12:00:00').toLocaleDateString('es-MX', {
       </svg>
       Volver a talleres
     </a>
+
+    {image && (
+      <div class="mb-8 overflow-hidden aspect-[16/7] bg-stone-100 dark:bg-stone-800">
+        <img
+          src={image}
+          alt={title}
+          loading="eager"
+          decoding="async"
+          class="w-full h-full object-cover"
+          onerror="this.src='/images/placeholder.svg'"
+        />
+      </div>
+    )}
 
     <p class="text-xs uppercase tracking-widest text-stone-400 mb-3">Taller</p>
     <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-stone-900 dark:text-stone-100 leading-tight">{title}</h1>
@@ -86,7 +99,7 @@ const formattedDate = new Date(date + 'T12:00:00').toLocaleDateString('es-MX', {
             Reservar lugar
           </h2>
           <p class="text-sm text-stone-500 dark:text-stone-400 mb-6">
-            Completá el formulario y te enviamos el enlace de pago para confirmar tu lugar.
+            Llena el formulario y te enviamos el enlace de pago para confirmar tu lugar.
           </p>
 
           <form

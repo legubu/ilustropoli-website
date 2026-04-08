@@ -69,7 +69,7 @@ collections:
         search_fields: ["title"]
         multiple: true
         required: false
-        hint: "Buscá y seleccioná etiquetas. Para crear una nueva, andá a la sección Etiquetas."
+        hint: "Busca y selecciona etiquetas. Para crear una nueva, ve a la sección Etiquetas."
 
       - { label: Descripción, name: body, widget: markdown, required: false, hint: "Historia, técnica, inspiración de la obra." }
 
