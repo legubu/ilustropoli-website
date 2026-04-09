@@ -9,6 +9,7 @@ interface Props {
   description?: string;
   image?: string;
   canonicalURL?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
@@ -16,9 +17,42 @@ const {
   description = 'Ilustropoli — Arte original, talleres y más.',
   image = '/og-default.jpg',
   canonicalURL = Astro.url.href,
+  jsonLd,
 } = Astro.props;
 
 const siteTitle = title === 'Ilustropoli' ? title : `${title} — Ilustropoli`;
+const siteUrl = Astro.site?.toString() ?? 'https://ilustropoli.com/';
+
+// Site-wide structured data, present on every page
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Ilustropoli',
+  url: siteUrl,
+  description: 'Arte original, ilustración y talleres creativos. Hermosillo, Sonora.',
+  inLanguage: 'es-MX',
+};
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Ilustropoli',
+  url: siteUrl,
+  logo: new URL('/favicon.svg', siteUrl).toString(),
+  email: 'hola@ilustropoli.com',
+  sameAs: ['https://instagram.com/ilustropoli'],
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Hermosillo',
+    addressRegion: 'Sonora',
+    addressCountry: 'MX',
+  },
+};
+
+// Escape `<` so a literal `</script>` in any string can't break out of the tag
+const toJsonLd = (obj: unknown) => JSON.stringify(obj).replace(/</g, '\\u003c');
+
+const pageSchemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 ---
 
 <!doctype html>
@@ -44,6 +78,13 @@ const siteTitle = title === 'Ilustropoli' ? title : `${title} — Ilustropoli`;
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{siteTitle}</title>
+
+    <!-- Structured data (JSON-LD) -->
+    <script type="application/ld+json" set:html={toJsonLd(websiteSchema)} />
+    <script type="application/ld+json" set:html={toJsonLd(organizationSchema)} />
+    {pageSchemas.map(schema => (
+      <script type="application/ld+json" set:html={toJsonLd(schema)} />
+    ))}
 
     <!-- Prevent dark mode flash on load — only activate if user explicitly chose it -->
     <script is:inline>

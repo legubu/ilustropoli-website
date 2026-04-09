@@ -27,11 +27,46 @@ const formattedDate = new Date(date + 'T12:00:00').toLocaleDateString('es-MX', {
   month: 'long',
   year: 'numeric',
 });
+
+// Structured data — Event with nested Offer, Place, and organizer
+const workshopSchema: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: title,
+  startDate: date,
+  description: `Taller: ${title}. ${duration}. ${formattedPrice}.`,
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  location: {
+    '@type': 'Place',
+    name: 'Ilustropoli',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Hermosillo',
+      addressRegion: 'Sonora',
+      addressCountry: 'MX',
+    },
+  },
+  organizer: {
+    '@type': 'Organization',
+    name: 'Ilustropoli',
+    url: Astro.site?.toString(),
+  },
+  offers: {
+    '@type': 'Offer',
+    price,
+    priceCurrency: 'MXN',
+    availability: capacity > 0 ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut',
+    url: Astro.url.href,
+  },
+};
+if (image) workshopSchema.image = new URL(image, Astro.site).toString();
 ---
 
 <BaseLayout
   title={title}
   description={`Taller: ${title}. ${formattedDate}. ${duration}. ${formattedPrice}.`}
+  jsonLd={workshopSchema}
 >
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Back -->

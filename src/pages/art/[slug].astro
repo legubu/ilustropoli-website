@@ -30,7 +30,7 @@ export async function getStaticPaths() {
 const { artwork, prev, next } = Astro.props;
 const { Content } = await render(artwork);
 
-const { title, price, images, palette, surface, stock, payment_link, for_sale, tags } = artwork.data;
+const { title, price, images, palette, surface, stock, payment_link, for_sale, category, tags } = artwork.data;
 const resolvedTags = (tags ?? []).map(slug => tagMap[slug] ?? slug);
 
 const formattedPrice = price
@@ -43,12 +43,37 @@ const formattedPrice = price
 
 const inStock = stock > 0;
 const canBuy = for_sale && payment_link && inStock;
+
+// Structured data — VisualArtwork with nested Offer when the piece is for sale
+const artworkDescription = [surface, palette].filter(Boolean).join(' · ') || `${title} — Obra original.`;
+const artworkSchema: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'VisualArtwork',
+  name: title,
+  image: new URL(images[0], Astro.site).toString(),
+  url: Astro.url.href,
+  description: artworkDescription,
+  creator: { '@type': 'Organization', name: 'Ilustropoli' },
+};
+if (category) artworkSchema.artMedium = category;
+if (surface) artworkSchema.artworkSurface = surface;
+if (for_sale && price != null) {
+  artworkSchema.offers = {
+    '@type': 'Offer',
+    price,
+    priceCurrency: 'MXN',
+    availability: inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+    url: Astro.url.href,
+    itemCondition: 'https://schema.org/NewCondition',
+  };
+}
 ---
 
 <BaseLayout
   title={title}
   description={`${title} — Obra original. ${surface ?? ''}`.trim()}
   image={images[0]}
+  jsonLd={artworkSchema}
 >
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
