@@ -1,7 +1,7 @@
 ---
 title: Blvd Kino
 images:
-  - /images/artworks/studio2.jpeg
+  - ../../assets/artworks/studio2.jpeg
 featured: false
 sale_divider: ""
 category: sketch

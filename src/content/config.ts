@@ -2,10 +2,10 @@ import { defineCollection, z } from 'astro:content';
 
 const artworks = defineCollection({
   type: 'content',
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     price: z.number().optional(),
-    images: z.array(z.string()),
+    images: z.array(image()),
     palette: z.string().optional(),
     surface: z.string().optional(),
     stock: z.number().default(1),
@@ -20,9 +20,9 @@ const artworks = defineCollection({
 
 const workshops = defineCollection({
   type: 'content',
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
-    image: z.string().optional(),
+    image: image().optional(),
     date: z.union([z.string(), z.date()]).transform(val =>
       val instanceof Date ? val.toISOString().split('T')[0] : val
     ),

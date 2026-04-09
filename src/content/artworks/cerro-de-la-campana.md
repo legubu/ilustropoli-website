@@ -1,7 +1,7 @@
 ---
 title: Cerro de la Campana
 images:
-  - /images/artworks/cerro-de-la-campana.jpg
+  - ../../assets/artworks/cerro-de-la-campana.jpg
 surface: Tela, 80x100 cm
 palette: Sombras y cálidos
 featured: true

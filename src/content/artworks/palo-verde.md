@@ -1,7 +1,7 @@
 ---
 title: Palo Verde
 images:
-  - /images/artworks/palo-verde.jpg
+  - ../../assets/artworks/palo-verde.jpg
 surface: Papel de algodón 300g, 35x50 cm
 palette: Verdes, rosas y ocres
 featured: true

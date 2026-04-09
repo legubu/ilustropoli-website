@@ -1,7 +1,7 @@
 ---
 title: Pokar y Rolando
 images:
-  - /images/artworks/Pokar.jpeg
+  - ../../assets/artworks/Pokar.jpeg
 featured: false
 sale_divider: ""
 category: acuarela

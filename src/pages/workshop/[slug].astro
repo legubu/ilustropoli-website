@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -44,13 +45,14 @@ const formattedDate = new Date(date + 'T12:00:00').toLocaleDateString('es-MX', {
 
     {image && (
       <div class="mb-8 overflow-hidden aspect-[16/7] bg-stone-100 dark:bg-stone-800">
-        <img
+        <Image
           src={image}
           alt={title}
+          widths={[600, 1000, 1400]}
+          sizes="(min-width: 1024px) 56rem, 100vw"
           loading="eager"
           decoding="async"
           class="w-full h-full object-cover"
-          onerror="this.src='/images/placeholder.svg'"
         />
       </div>
     )}

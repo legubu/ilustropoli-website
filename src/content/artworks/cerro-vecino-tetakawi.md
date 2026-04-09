@@ -1,7 +1,7 @@
 ---
 title: Cerro vecino Tetakawi
 images:
-  - /images/artworks/cerrovecino.jpeg
+  - ../../assets/artworks/cerrovecino.jpeg
 featured: false
 sale_divider: ""
 category: acuarela

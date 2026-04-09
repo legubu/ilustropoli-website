@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ImageGallery from '../../components/ImageGallery.astro';
 import BuyButton from '../../components/BuyButton.astro';
+import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 
 const tagEntries = await getCollection('tags');
@@ -48,7 +49,7 @@ const canBuy = for_sale && payment_link && inStock;
 <BaseLayout
   title={title}
   description={`${title} — Obra original. ${surface ?? ''}`.trim()}
-  image={images[0]}
+  image={images[0].src}
 >
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
@@ -145,11 +146,12 @@ const canBuy = for_sale && payment_link && inStock;
             </span>
             <div class="flex items-center gap-3">
               <div class="w-12 h-12 overflow-hidden bg-stone-100 flex-shrink-0">
-                <img
+                <Image
                   src={prev.data.images[0]}
                   alt={prev.data.title}
+                  width={48}
+                  height={48}
                   class="w-full h-full object-cover"
-                  onerror="this.src='/images/placeholder.svg'"
                 />
               </div>
               <span class="font-serif text-sm text-stone-700 dark:text-stone-300 group-hover:text-stone-400 transition-colors leading-snug">
@@ -172,11 +174,12 @@ const canBuy = for_sale && payment_link && inStock;
             </span>
             <div class="flex items-center gap-3 flex-row-reverse">
               <div class="w-12 h-12 overflow-hidden bg-stone-100 flex-shrink-0">
-                <img
+                <Image
                   src={next.data.images[0]}
                   alt={next.data.title}
+                  width={48}
+                  height={48}
                   class="w-full h-full object-cover"
-                  onerror="this.src='/images/placeholder.svg'"
                 />
               </div>
               <span class="font-serif text-sm text-stone-700 dark:text-stone-300 group-hover:text-stone-400 transition-colors leading-snug">

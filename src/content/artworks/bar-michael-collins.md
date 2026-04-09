@@ -2,7 +2,7 @@
 title: Bar Michael Collins
 price: 450
 images:
-  - /images/artworks/bar-michael-collins.jpg
+  - ../../assets/artworks/bar-michael-collins.jpg
 palette: Tierras, azules y dorados
 surface: Tela de lino, 50x70 cm
 stock: 1

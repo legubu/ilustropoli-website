@@ -1,23 +1,32 @@
 ---
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 interface Props {
-  images: string[];
+  images: ImageMetadata[];
   title: string;
 }
 
 const { images, title } = Astro.props;
+
+// Precompute processed URLs for each image so the JS thumbnail swap can set them directly
+const processed = await Promise.all(
+  images.map(img => getImage({ src: img, widths: [600, 1000, 1600], format: 'webp' }))
+);
 ---
 
 <div class="space-y-4">
   <!-- Main image -->
   <div class="bg-stone-100 flex items-center justify-center">
-    <img
+    <Image
       id="main-image"
       src={images[0]}
       alt={title}
+      widths={[600, 1000, 1600]}
+      sizes="(min-width: 1024px) 50vw, 100vw"
       loading="eager"
       decoding="async"
       class="w-full h-auto max-h-[75vh] object-contain"
-      onerror="this.src='/images/placeholder.svg'"
     />
   </div>
 
@@ -27,15 +36,16 @@ const { images, title } = Astro.props;
       {images.map((img, i) => (
         <button
           class="thumbnail flex-shrink-0 w-16 h-16 overflow-hidden border-2 border-transparent hover:border-stone-400 transition-colors focus:outline-none focus:border-stone-600"
-          data-src={img}
+          data-src={processed[i].src}
           aria-label={`Ver imagen ${i + 1}`}
         >
-          <img
+          <Image
             src={img}
             alt={`${title} — vista ${i + 1}`}
+            width={100}
+            height={100}
             loading="lazy"
             class="w-full h-full object-cover"
-            onerror="this.src='/images/placeholder.svg'"
           />
         </button>
       ))}
@@ -51,6 +61,10 @@ const { images, title } = Astro.props;
     btn.addEventListener('click', () => {
       const src = btn.dataset.src;
       if (src && mainImage) {
+        // Clear srcset/sizes so the browser uses the new src directly
+        // (otherwise the stale srcset from the initial image keeps winning)
+        mainImage.removeAttribute('srcset');
+        mainImage.removeAttribute('sizes');
         mainImage.src = src;
       }
       thumbnails.forEach(b => b.classList.remove('border-stone-600'));

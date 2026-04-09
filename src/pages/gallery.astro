@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CategoryFilter from '../components/CategoryFilter.astro';
+import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 
 const tagEntries = await getCollection('tags');
@@ -55,12 +56,13 @@ const usedTags = tagEntries
                 <div class="slide-inner overflow-hidden bg-stone-100"
                   style="transition: opacity 0.5s ease, transform 0.5s ease; transform-origin: center;">
                   <a href={`/art/${artwork.slug}`} class="block">
-                    <img
+                    <Image
                       src={artwork.data.images[0]}
                       alt={artwork.data.title}
+                      widths={[600, 1000, 1600]}
+                      sizes="(min-width: 1024px) 48vw, (min-width: 640px) 62vw, 80vw"
                       loading={i === 0 ? 'eager' : 'lazy'}
                       class="w-full max-h-[62vh] object-contain"
-                      onerror="this.src='/images/placeholder.svg'"
                     />
                   </a>
                 </div>
@@ -172,12 +174,13 @@ const usedTags = tagEntries
         >
           <a href={`/art/${artwork.slug}`} class="block">
             <div class="aspect-square overflow-hidden bg-stone-100">
-              <img
+              <Image
                 src={artwork.data.images[0]}
                 alt={artwork.data.title}
+                widths={[200, 400, 600]}
+                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
                 loading="lazy"
                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                onerror="this.src='/images/placeholder.svg'"
               />
             </div>
             <div class="mt-2">

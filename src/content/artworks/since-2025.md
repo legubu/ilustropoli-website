@@ -1,7 +1,7 @@
 ---
 title: Since 2025
 images:
-  - /images/artworks/Since2025.jpeg
+  - ../../assets/artworks/Since2025.jpeg
 featured: false
 sale_divider: ""
 category: acuarela

@@ -6,8 +6,8 @@ backend:
 # Local backend for development — run `npx decap-server` to use
 # local_backend: true
 
-media_folder: public/images/artworks
-public_folder: /images/artworks
+media_folder: src/assets/artworks
+public_folder: ../../assets/artworks
 
 site_url: https://ilustropoli.netlify.app
 display_url: https://ilustropoli.netlify.app
